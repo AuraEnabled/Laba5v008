@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-//import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,20 +16,23 @@ import sample.ENUMs.Paid;
 import sample.ENUMs.Procedures;
 import sample.classes.Patient;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
-
-//import java.awt.*;
 
 public class Main extends Application {
 
     private TableView<Patient> table;
     private TextField nameInput, idInput, priceInput, debtInput;
     private ChoiceBox<String> proceduresChoiceBoxInput, paidChoiceBoxInput;
-
     private Procedures procedure;       //ENUM Procedures
     private String procedureStr;
-
     private Paid paid;                  //ENUM Paid
     private String paidStr;
 
@@ -105,7 +107,7 @@ public class Main extends Application {
 
 //        The add button
         Button addButton = new Button("Добавить");
-        addButton.setOnAction(e -> {addButtonOnClick(); });
+        addButton.setOnAction(e -> addButtonOnClick());
 
 //        The delete button
         Button delButton = new Button("Удалить");
@@ -120,8 +122,6 @@ public class Main extends Application {
         hBoxLVL1.getChildren().add(priceInput);
         hBoxLVL1.getChildren().add(paidChoiceBoxInput);
         hBoxLVL1.getChildren().add(debtInput);
-//        hBoxLVL1.getChildren().add(addButton);
-//        hBoxLVL1.getChildren().add(delButton);
 //        hBoxLVL1.getChildren().addAll(nameInput, idInput, proceduresChoiceBoxInput, priceInput, paidChoiceBoxInput, debtInput, addButton, delButton);
 
         HBox hBoxLVL2 = new HBox();
@@ -152,7 +152,7 @@ public class Main extends Application {
         patients.add(new Patient("Жмышенко Валерий",            1, Procedures.Кастрация.toString(),        200, Paid.True.toString(), 0));
         patients.add(new Patient("Ананасов Александер",         2, Procedures.Кремация.toString(),         150, Paid.True.toString(),0));
         patients.add(new Patient("Белоглазов Анатолий",         3, Procedures.Пломбирование.toString(),    500, Paid.False.toString(), 35));
-        patients.add(new Patient("Ткаченко Григорий" ,          4, Procedures.Протезирование.toString(),  300, Paid.True.toString(), 0));
+        patients.add(new Patient("Ткаченко Григорий" ,          4, Procedures.Протезирование.toString(),   300, Paid.True.toString(), 0));
         patients.add(new Patient("Трипавловских Александер",    5, Procedures.Чистка.toString(),           125, Paid.False.toString(), 70));
         return patients;
     }
