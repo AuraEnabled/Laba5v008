@@ -140,7 +140,7 @@ public class Main extends Application {
 //        Scene release
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Инто-сана");
-        primaryStage.setScene(new Scene(vBox, 950, 500));
+        primaryStage.setScene(new Scene(vBox, 940, 500));
         primaryStage.setResizable(false);
         primaryStage.show();
     }
