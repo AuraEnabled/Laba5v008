@@ -19,6 +19,7 @@ import sample.classes.Patient;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import sample.classes.Patients;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class Main extends Application {
     private String procedureStr;
     private Paid paid;                  //ENUM Paid
     private String paidStr;
+    private Patients patientsNew = new Patients();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -113,6 +115,14 @@ public class Main extends Application {
         Button delButton = new Button("Удалить");
         delButton.setOnAction(e -> delButtonOnClick());
 
+//        Save button
+        Button saveButton = new Button("Сохранить");
+        saveButton.setOnAction(e -> save());
+
+//        Load button
+        Button loadButton = new Button("Загрузить");
+        loadButton.setOnAction(e -> load());
+
         HBox hBoxLVL1 = new HBox();
         hBoxLVL1.setPadding(new Insets(10, 10, 10, 10));
         hBoxLVL1.setSpacing(10);
@@ -129,6 +139,8 @@ public class Main extends Application {
         hBoxLVL2.setSpacing(10);
         hBoxLVL2.getChildren().add(addButton);
         hBoxLVL2.getChildren().add(delButton);
+        hBoxLVL2.getChildren().add(saveButton);
+        hBoxLVL2.getChildren().add(loadButton);
 
         table = new TableView<>();
         table.setItems(getPatient());
@@ -144,19 +156,55 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
+//    ObservableList<Stavka> oListStavaka = FXCollections.observableArrayList(listStavaka);
+//    ObservableList<Patient> patients = FXCollections.observableArrayList(listStavaka);
 
 
     //    ObservableList
     public ObservableList<Patient> getPatient(){
         ObservableList<Patient> patients = FXCollections.observableArrayList();
-        patients.add(new Patient("Жмышенко Валерий",            1, Procedures.Кастрация.toString(),        200, Paid.True.toString(), 0));
-        patients.add(new Patient("Ананасов Александер",         2, Procedures.Кремация.toString(),         150, Paid.True.toString(),0));
-        patients.add(new Patient("Белоглазов Анатолий",         3, Procedures.Пломбирование.toString(),    500, Paid.False.toString(), 35));
-        patients.add(new Patient("Ткаченко Григорий" ,          4, Procedures.Протезирование.toString(),   300, Paid.True.toString(), 0));
-        patients.add(new Patient("Трипавловских Александер",    5, Procedures.Чистка.toString(),           125, Paid.False.toString(), 70));
+//        Patients patientsNew = new Patients();
+
+//        patients.add(new Patient("Жмышенко Валерий",            1, Procedures.Кастрация.toString(),        200, Paid.True.toString(), 0));
+//        patients.add(new Patient("Ананасов Александер",         2, Procedures.Кремация.toString(),         150, Paid.True.toString(),0));
+//        patients.add(new Patient("Белоглазов Анатолий",         3, Procedures.Пломбирование.toString(),    500, Paid.False.toString(), 35));
+//        patients.add(new Patient("Ткаченко Григорий" ,          4, Procedures.Протезирование.toString(),   300, Paid.True.toString(), 0));
+//        patients.add(new Patient("Трипавловских Александер",    5, Procedures.Чистка.toString(),           125, Paid.False.toString(), 70));
+
+        patientsNew.getListOfPatients().add(new Patient("Говнов Иван", 3, Procedures.Чистка.toString(), 500, Paid.True.toString(), 0));
+        patientsNew.getListOfPatients().add(new Patient("Летов Егор", 4, Procedures.Протезирование.toString(), 500, Paid.False.toString(), 500));
+        patientsNew.getListOfPatients().add(new Patient("Шмурдяк Антон", 14, Procedures.Кремация.toString(), 800, Paid.False.toString(), 400));
+        patientsNew.getListOfPatients().add(new Patient("Горин Геннадий", 5, Procedures.Протезирование.toString(), 500, Paid.False.toString(), 500));
+        patientsNew.getListOfPatients().add(new Patient("Белоглазов Анатолий", 88, Procedures.Чистка.toString(), 500, Paid.True.toString(), 0));
+        patientsNew.getListOfPatients().add(new Patient("Борис Бритва", 15, Procedures.Пломбирование.toString(), 350, Paid.True.toString(), 0));
+
+        patients.addAll(patientsNew.getListOfPatients());
+
         return patients;
     }
 
+
+    private /*static*/ void save() {
+        if (patientsNew.getListOfPatients().size() != 0) {
+            try {
+                final ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                objectMapper.writeValue(new File("Patients.json"), patientsNew);
+            } catch (IOException error) {
+                error.printStackTrace();
+            }
+        }
+    }
+
+    private void load() {
+        try {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+            Patients patients = objectMapper.readValue(new File("patients.json"), Patients.class);
+        } catch (IOException error) {
+            error.printStackTrace();
+        }
+    }
     //    Add button clicked
     public void addButtonOnClick(){
         Patient patient = new Patient();
