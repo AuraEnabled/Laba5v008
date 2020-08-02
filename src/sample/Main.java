@@ -183,6 +183,11 @@ public class Main extends Application {
         return patients;
     }
 
+    public static double parseDoubleOrNull(String str) {
+        double dbl;
+        dbl = str.isEmpty() ? 0.0 : Double.parseDouble(str);
+        return dbl;
+    }
 
     private /*static*/ void save() {
         if (patientsNew.getListOfPatients().size() != 0) {
@@ -211,10 +216,11 @@ public class Main extends Application {
         patient.setName(nameInput.getText());
         patient.setId(parseInt(idInput.getText()));
         patient.setProcedure(getProcedureChoice(proceduresChoiceBoxInput));
-        patient.setPrice(parseDouble(priceInput.getText()));
+        patient.setPrice(parseDoubleOrNull(priceInput.getText()));
         patient.setPaid(getPaidChoice(paidChoiceBoxInput));
-        patient.setDebt(parseDouble(debtInput.getText()));
-        table.getItems().add(patient);
+        patient.setDebt(parseDoubleOrNull(debtInput.getText()));
+        table.getItems().add(patient);          // COMM
+        patientsNew.getListOfPatients().add(patient);
         nameInput.clear();
         idInput.clear();
         proceduresChoiceBoxInput.getSelectionModel().select(0);

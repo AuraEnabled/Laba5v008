@@ -11,7 +11,7 @@ public class Patient {
     private String procedure;
     private double price;
     private String paid;
-    private double debt;
+    private Double debt;
 
     public Patient(){
         this.name = "";
@@ -19,7 +19,7 @@ public class Patient {
         this.procedure = Procedures.Кастрация.toString();
         this.price = 0;
         this.paid = Paid.True.toString();
-        this.debt = 0;
+        this.debt = 0.0;
     }
 
     public Patient(String name, int id, String procedure, double price, String paid, double debt){
@@ -68,7 +68,7 @@ public class Patient {
     public void setPaid(String paid) {
         this.paid = paid;
     }
-    public void setDebt(double debt) {
+    public void setDebt(Double debt) {
         this.debt = debt;
     }
 }
